@@ -1,7 +1,7 @@
 package com.dmitryvoronko.view;
 
-import com.dmitryvoronko.model.Cell;
 import com.dmitryvoronko.model.Game;
+import com.dmitryvoronko.model.Move;
 import com.dmitryvoronko.model.Side;
 import com.dmitryvoronko.model.State;
 import javafx.collections.ObservableList;
@@ -24,18 +24,22 @@ import java.util.Optional;
  */
 public class MainLayoutController implements Observer {
 
-    private Side userSide;
     private Side computerSide;
     private Game game;
     private ArrayList<Button> field;
-    private EventHandler<MouseEvent> choiceCellHandler = new EventHandler<MouseEvent>() {
+    private EventHandler<MouseEvent> clickCellHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
+            clickCell(event);
+        }
+
+        private void clickCell(MouseEvent event) {
             Button button = (Button) event.getSource();
-            button.setText(userSide.name());
+            String userSide = game.getUser().getSide().name();
+            button.setText(userSide);
             button.setDisable(true);
             int row = ((GridPane) button.getParent()).getRowIndex(button);
             int column = ((GridPane) button.getParent()).getColumnIndex(button);
-            game.move(row, column, userSide);
+            game.getUser().move(row, column);
         }
     };
 
@@ -84,7 +88,7 @@ public class MainLayoutController implements Observer {
         field.add(buttonCell22);
         showDialog();
         for (Button button : field) {
-            button.setOnMouseClicked(choiceCellHandler);
+            button.setOnMouseClicked(clickCellHandler);
         }
 
     }
@@ -94,7 +98,7 @@ public class MainLayoutController implements Observer {
             if (game.getState() != State.RUN) {
                 showGameOverDialog();
             } else {
-                Cell computerMove = (Cell) arg;
+                Move computerMove = (Move) arg;
                 int row = computerMove.getRow();
                 int column = computerMove.getColumn();
                 Button button = (Button) getNodeByRowColumnIndex(row, column, gridPane);
@@ -147,11 +151,9 @@ public class MainLayoutController implements Observer {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeOne) {
             newGame(Side.X);
-            userSide = Side.X;
             computerSide = Side.O;
         } else {
             newGame(Side.O);
-            userSide = Side.O;
             computerSide = Side.X;
         }
     }

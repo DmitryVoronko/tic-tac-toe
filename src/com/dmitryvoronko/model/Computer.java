@@ -7,16 +7,11 @@ import java.util.Random;
 /**
  * Created by Dmitry on 24/09/2016.
  */
-public class Computer {
+public final class Computer extends Player {
 
-    private Side side;
-    private Field field;
-    private Game game;
 
-    public Computer(Side side, Field field, Game game) {
-        this.side = side;
-        this.field = field;
-        this.game = game;
+    public Computer(Field field, Side side) {
+        super(field, side);
     }
 
     private boolean isWinMove(int row, int column, Field field, Side side) {
@@ -30,29 +25,29 @@ public class Computer {
         return false;
     }
 
-    private Cell winMove(Side tSide) {
+    private Move winMove(Side tSide) {
         for (int i = 0; i < field.length; i++)
             for (int j = 0; j < field.length; j++)
                 if (field.getCells()[i][j] == 0)
                     if (isWinMove(i, j, field.clone(), tSide)) {
-                        game.move(i, j, side);
-                        return new Cell(i, j);
+                        move(i, j);
+                        return new Move(i, j);
                     }
         return null;
     }
 
-    public Cell getStrategyMove() {
-        Cell result;
-        Cell winMove = winMove(side);
+    public Move getStrategyMove() {
+        Move result;
+        Move winMove = winMove(side);
         if (winMove != null) result = winMove;
         else {
-            Cell enemyWinMove = winMove(getEnemySide());
+            Move enemyWinMove = winMove(getEnemySide());
             result = enemyWinMove == null ? getMove() : enemyWinMove;
         }
         return result;
     }
 
-    private Cell getRandomMove() {
+    private Move getRandomMove() {
         int row, column;
         Random rand = new Random();
         int result;
@@ -62,16 +57,16 @@ public class Computer {
             column = result % R.FIELD_LENGTH;
         } while (field.getCells()[row][column] == 0);
 
-        game.move(row, column, side);
+        move(row, column);
 
-        return new Cell(row, column);
+        return new Move(row, column);
     }
 
-    private Cell getMove() {
+    private Move getMove() {
         int center = (field.length - 1) / 2;
         if (field.getCells()[center][center] == 0) {
-            game.move(center, center, side);
-            return new Cell(center, center);
+            move(center, center);
+            return new Move(center, center);
         }
         return getRandomMove();
     }
@@ -84,4 +79,7 @@ public class Computer {
         }
     }
 
+    public void move() {
+        getStrategyMove();
+    }
 }
