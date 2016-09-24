@@ -18,12 +18,7 @@ public class Game extends Observable {
     }
 
     public boolean move(int row, int column, Side side) {
-        try {
-            field.fillCell(row, column, side.getId());
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
+       return field.fillCell(row, column, side.getId());
     }
 
     public Side getWinner() {

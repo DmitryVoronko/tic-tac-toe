@@ -25,7 +25,6 @@ public class MainLayoutController implements Observer {
     private String userChoice;
     private ArrayList<Button> field;
     private EventHandler<MouseEvent> choiceCellHandler = new EventHandler<MouseEvent>() {
-        @Override
         public void handle(MouseEvent event) {
             Button button = (Button) event.getSource();
             button.setText("X");
@@ -102,7 +101,7 @@ public class MainLayoutController implements Observer {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText("Look, a Confirmation Dialog");
-        alert.setContentText("Are you ok with this?");
+        alert.setContentText("Начать новую игру?");
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {

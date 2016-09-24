@@ -22,15 +22,16 @@ public class Field extends Observable {
         return length;
     }
 
-    public void fillCell(int row, int column, int value) throws IllegalArgumentException {
+    public boolean fillCell(int row, int column, int value) {
         int currentCell = cells[row][column];
 
         if (currentCell != 0) {
-            throw new IllegalArgumentException("That cell is full!");
+           return false;
         }
 
         cells[row][column] = value;
         setChanged();
         notifyObservers();
+        return true;
     }
 }
