@@ -5,12 +5,14 @@ import java.util.Observable;
 /**
  * Created by Dmitry on 24/09/2016.
  */
-public class Field extends Observable {
+public class Field extends Observable implements Cloneable {
 
-    private final int length = 3;
+    public final int length;
+
     private int[][] cells;
 
-    public Field() {
+    public Field(int length) {
+        this.length = length;
         cells = new int[length][length];
     }
 
@@ -18,20 +20,24 @@ public class Field extends Observable {
         return cells;
     }
 
-    public int getLength() {
-        return length;
-    }
-
     public boolean fillCell(int row, int column, int value) {
         int currentCell = cells[row][column];
 
         if (currentCell != 0) {
-           return false;
+            return false;
         }
 
         cells[row][column] = value;
         setChanged();
         notifyObservers();
         return true;
+    }
+
+    public Field clone() {
+        try {
+            return (Field) super.clone();
+        } catch (CloneNotSupportedException ex) {
+            throw new InternalError();
+        }
     }
 }

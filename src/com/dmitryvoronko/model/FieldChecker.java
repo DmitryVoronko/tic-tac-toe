@@ -1,53 +1,40 @@
 package com.dmitryvoronko.model;
 
-import java.util.Observable;
-import java.util.Observer;
-
 /**
  * Created by Dmitry on 24/09/2016.
  */
-public class FieldChecker implements Observer {
+public class FieldChecker {
 
-    private Field field;
     private int winIdentifier;
-    private Game game;
 
-    public FieldChecker(Field field, Game game) {
-        this.game = game;
-        this.field = field;
-        field.addObserver(this);
+    public FieldChecker() {
     }
 
-    private boolean isWin() {
-        return hasWinningRow() || hasWinningColumn() || hasWinningDiagonal();
+    public boolean isWin(Field field) {
+        return hasWinningRow(field) ||
+                hasWinningColumn(field) ||
+                hasWinningDiagonal(field);
     }
 
-    private boolean isDraw() {
-        int cells[][] = field.getCells();
-        for (int i = 0; i < cells.length; i++)
-            for (int j = 0; j < cells.length; j++)
-                if (cells[i][j] == 0) return false;
-        return true;
+    private boolean hasWinningDiagonal(Field field) {
+        return isWinningSequence(field, 0, 0, 1, 1) ||
+                isWinningSequence(field, 0, field.length - 1, 1, -1);
     }
 
-    private boolean hasWinningDiagonal() {
-        return isWinningSequence(0, 0, 1, 1) || isWinningSequence(0, field.getLength() - 1, 1, -1);
-    }
-
-    private boolean hasWinningRow() {
-        for (int i = 0; i < field.getLength(); i++)
-            if (isWinningSequence(i, 0, 0, 1)) return true;
+    private boolean hasWinningRow(Field field) {
+        for (int i = 0; i < field.length; i++)
+            if (isWinningSequence(field, i, 0, 0, 1)) return true;
         return false;
     }
 
-    private boolean hasWinningColumn() {
-        for (int i = 0; i < field.getLength(); i++)
-            if (isWinningSequence(0, i, 1, 0))
+    private boolean hasWinningColumn(Field field) {
+        for (int i = 0; i < field.length; i++)
+            if (isWinningSequence(field, 0, i, 1, 0))
                 return true;
         return false;
     }
 
-    private boolean isWinningSequence(int row, int column, int rowIncrement, int columnIncrement) {
+    private boolean isWinningSequence(Field field, int row, int column, int rowIncrement, int columnIncrement) {
         int[][] cells = field.getCells();
         int firstElement = cells[row][column];
         if (firstElement == 0) return false;
@@ -57,24 +44,19 @@ public class FieldChecker implements Observer {
             row += rowIncrement;
             column += columnIncrement;
         } while (true);
-        setWinIdentifier(firstElement);
+        winIdentifier = firstElement;
         return true;
     }
 
-    public void update(Observable o, Object arg) {
-        if (o instanceof Field) {
-            this.field = (Field) o;
-            if (isWin()) {
-                game.setWinner(winIdentifier);
-                game.setState(State.WON);
-            }
-            if (isDraw()) {
-                game.setState(State.DRAW);
-            }
-        }
+    public boolean isDraw(Field field) {
+        int cells[][] = field.getCells();
+        for (int i = 0; i < cells.length; i++)
+            for (int j = 0; j < cells.length; j++)
+                if (cells[i][j] == 0) return false;
+        return true;
     }
 
-    private void setWinIdentifier(int winIdentifier) {
-        this.winIdentifier = winIdentifier;
+    public int getWinIdentifier() {
+        return winIdentifier;
     }
 }

@@ -1,15 +1,18 @@
 package com.dmitryvoronko.view;
 
+import com.dmitryvoronko.model.Cell;
 import com.dmitryvoronko.model.Game;
 import com.dmitryvoronko.model.Side;
+import com.dmitryvoronko.model.State;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -21,28 +24,23 @@ import java.util.Optional;
  */
 public class MainLayoutController implements Observer {
 
+    private Side userSide;
+    private Side computerSide;
     private Game game;
-    private String userChoice;
     private ArrayList<Button> field;
     private EventHandler<MouseEvent> choiceCellHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             Button button = (Button) event.getSource();
-            button.setText("X");
+            button.setText(userSide.name());
             button.setDisable(true);
             int row = ((GridPane) button.getParent()).getRowIndex(button);
             int column = ((GridPane) button.getParent()).getColumnIndex(button);
-            game.move(row, column, Side.X);
-        }
-    };
-    @FXML
-    private VBox choicePlayerBox;
-    private EventHandler<MouseEvent> handler = new EventHandler<MouseEvent>() {
-        public void handle(MouseEvent event) {
-            userChoice = ((Button) event.getSource()).getText();
-            choicePlayerBox.getParent().getChildrenUnmodifiable().remove(choicePlayerBox);
+            game.move(row, column, userSide);
         }
     };
 
+    @FXML
+    private GridPane gridPane;
     @FXML
     private Button buttonCell00;
     @FXML
@@ -74,7 +72,6 @@ public class MainLayoutController implements Observer {
 
     @FXML
     private void initialize() {
-        newGame(Side.X);
         field = new ArrayList<>();
         field.add(buttonCell00);
         field.add(buttonCell01);
@@ -85,34 +82,104 @@ public class MainLayoutController implements Observer {
         field.add(buttonCell20);
         field.add(buttonCell21);
         field.add(buttonCell22);
-
+        showDialog();
         for (Button button : field) {
             button.setOnMouseClicked(choiceCellHandler);
         }
+
     }
 
     public void update(Observable o, Object arg) {
         if (o instanceof Game) {
-            System.out.println("CHTOTO PROIZOSHLO" + game.getState());
+            if (game.getState() != State.RUN) {
+                showGameOverDialog();
+            } else {
+                Cell computerMove = (Cell) arg;
+                int row = computerMove.getRow();
+                int column = computerMove.getColumn();
+                Button button = (Button) getNodeByRowColumnIndex(row, column, gridPane);
+                button.setText(computerSide.name());
+                button.setDisable(true);
+            }
         }
     }
 
     private void showGameOverDialog() {
+        String title;
+        if (game.getState().equals(State.WON)) {
+            title = "Победа " + game.getWinner().name();
+        } else {
+            title = "Ничья";
+        }
+        showDialog(title);
+    }
+
+    private void showDialog(String title) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Look, a Confirmation Dialog");
+        alert.setTitle(title);
+        alert.setHeaderText(title);
         alert.setContentText("Начать новую игру?");
 
+        ButtonType buttonTypeOne = new ButtonType("Да");
+        ButtonType buttonTypeTwo = new ButtonType("Выход");
+
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            newGame(Side.X);
+        if (result.get() == buttonTypeOne) {
+            showDialog();
         } else {
             System.exit(0);
         }
     }
 
+    private void showDialog() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Выберите сторону");
+        alert.setHeaderText("Выберите X или O");
+        alert.setContentText("Выберите сторону");
+
+        ButtonType buttonTypeOne = new ButtonType("X");
+        ButtonType buttonTypeTwo = new ButtonType("O");
+
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeOne) {
+            newGame(Side.X);
+            userSide = Side.X;
+            computerSide = Side.O;
+        } else {
+            newGame(Side.O);
+            userSide = Side.O;
+            computerSide = Side.X;
+        }
+    }
+
     private void newGame(Side side) {
+        clearField();
         game = new Game(side);
         game.addObserver(this);
+    }
+
+    private void clearField() {
+        for (Button button : field) {
+            button.setDisable(false);
+            button.setText("");
+        }
+    }
+
+    public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
+        Node result = null;
+        ObservableList<Node> childrens = gridPane.getChildren();
+
+        for (Node node : childrens) {
+            if (gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+                result = node;
+                break;
+            }
+        }
+
+        return result;
     }
 }

@@ -1,5 +1,7 @@
 package com.dmitryvoronko.model;
 
+import com.dmitryvoronko.R;
+
 import java.util.Observable;
 
 /**
@@ -10,15 +12,31 @@ public class Game extends Observable {
     private Field field;
     private Side winner;
     private State state;
+    private Computer computer;
 
     public Game(Side side) {
-        this.field = new Field();
-        FieldChecker fieldChecker = new FieldChecker(field, this);
+        this.field = new Field(R.FIELD_LENGTH);
+        Consider consider = new Consider(this);
         this.state = State.RUN;
+
+        switch (side) {
+            case X:
+                computer = new Computer(Side.O, field, this);
+                break;
+            case O:
+                computer = new Computer(Side.X, field, this);
+                break;
+        }
+//        computerMove();
+    }
+
+    private void computerMove() {
+        setChanged();
+        notifyObservers(computer.getStrategyMove());
     }
 
     public boolean move(int row, int column, Side side) {
-       return field.fillCell(row, column, side.getId());
+        return field.fillCell(row, column, side.getId());
     }
 
     public Side getWinner() {
@@ -38,5 +56,9 @@ public class Game extends Observable {
         this.state = state;
         setChanged();
         notifyObservers();
+    }
+
+    public Field getField() {
+        return field;
     }
 }

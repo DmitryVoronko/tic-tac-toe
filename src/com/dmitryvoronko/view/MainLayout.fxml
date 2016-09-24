@@ -3,11 +3,13 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="200.0" maxWidth="200.0" minHeight="200.0" minWidth="200.0" prefHeight="200.0"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="200.0" maxWidth="200.0" minHeight="200.0" minWidth="200.0"
+            prefHeight="200.0"
             prefWidth="200.0" styleClass="content-background" stylesheets="@material-fx-v0_3.css"
             xmlns="http://javafx.com/javafx/8" fx:controller="com.dmitryvoronko.view.MainLayoutController">
     <center>
-        <GridPane alignment="CENTER" focusTraversable="true" hgap="10" stylesheets="@material-fx-v0_3.css" vgap="10"
+        <GridPane fx:id="gridPane" alignment="CENTER" focusTraversable="true" hgap="10"
+                  stylesheets="@material-fx-v0_3.css" vgap="10"
                   BorderPane.alignment="CENTER">
             <rowConstraints>
                 <RowConstraints valignment="CENTER"/>
