@@ -1,5 +1,7 @@
 package com.dmitryvoronko.model.field;
 
+import com.dmitryvoronko.model.game.Move;
+
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -31,7 +33,7 @@ public class Field extends Observable implements Cloneable {
                 System.out.println(cell);
                 System.out.println(value);
                 setChanged();
-                notifyObservers();
+                notifyObservers(new Move(row, column));
                 return true;
             }
         System.out.println("Не удалось");
