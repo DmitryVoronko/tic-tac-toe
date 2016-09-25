@@ -1,6 +1,6 @@
 package com.dmitryvoronko.view;
 
-import com.dmitryvoronko.model.field.*;
+import com.dmitryvoronko.model.field.Field;
 import com.dmitryvoronko.model.game.Game;
 import com.dmitryvoronko.model.game.Move;
 import com.dmitryvoronko.model.game.Side;

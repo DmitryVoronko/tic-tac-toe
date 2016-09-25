@@ -1,6 +1,8 @@
 package com.dmitryvoronko.model.player;
 
-import com.dmitryvoronko.model.field.*;
+import com.dmitryvoronko.model.field.Cell;
+import com.dmitryvoronko.model.field.Field;
+import com.dmitryvoronko.model.field.FieldChecker;
 import com.dmitryvoronko.model.game.Move;
 import com.dmitryvoronko.model.game.Side;
 
@@ -28,7 +30,8 @@ public final class Computer extends MovablePlayer {
         return "Компьютер";
     }
 
-    private boolean isWinMove(Cell currentCell, Field field, Side side) {
+    private boolean isWinMove(int row, int column, Field field, Side side) {
+        Cell currentCell = field.getCellByRowAndColumn(row, column);
         currentCell.setValue(side.getId());
         FieldChecker fieldChecker = new FieldChecker();
         System.out.println("Проверка в Computer");
@@ -44,7 +47,7 @@ public final class Computer extends MovablePlayer {
             for (int column = 0; column < field.length; column++) {
                 Cell currentCell = field.getCellByRowAndColumn(row, column);
                 if (currentCell.isEmpty())
-                    if (isWinMove(currentCell, field.clone(), tSide)) {
+                    if (isWinMove(currentCell.getRow(), currentCell.getColumn(), field.clone(), tSide)) {
                         System.out.println("Вернул выигрышный путь");
                         return new Move(row, column);
                     }
