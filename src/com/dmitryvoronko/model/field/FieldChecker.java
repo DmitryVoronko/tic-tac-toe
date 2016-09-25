@@ -1,4 +1,7 @@
-package com.dmitryvoronko.model;
+package com.dmitryvoronko.model.field;
+
+
+import com.dmitryvoronko.model.game.Move;
 
 import java.util.ArrayList;
 
@@ -38,27 +41,25 @@ public class FieldChecker {
     }
 
     private boolean isWinningSequence(Field field, int row, int column, int rowIncrement, int columnIncrement) {
-        int[][] cells = field.getCells();
-        int firstElement = cells[row][column];
-        if (firstElement == 0) return false;
+        ArrayList<Cell> cells = field.getCells();
+        Cell firstElement = field.getCellByRowAndColumn(row, column);
+        if (firstElement.isEmpty()) return false;
         winnigSequence = new ArrayList<Move>();
         do {
-            if (!((row >= 0) && (row < cells.length) && (column >= 0) && (column < cells.length))) break;
-            if (cells[row][column] == 0) return false;
-            if (cells[row][column] != firstElement) return false;
+            if (!((row >= 0) && (row < field.length) && (column >= 0) && (column < field.length))) break;
+            Cell currentCell = field.getCellByRowAndColumn(row, column);
+            if (currentCell.isEmpty()) return false;
+            if (currentCell.getValue() != firstElement.getValue()) return false;
             winnigSequence.add(new Move(row, column));
             row += rowIncrement;
             column += columnIncrement;
         } while (true);
-        winIdentifier = firstElement;
+        winIdentifier = firstElement.getValue();
         return true;
     }
 
     public boolean isDraw(Field field) {
-        int cells[][] = field.getCells();
-        for (int i = 0; i < cells.length; i++)
-            for (int j = 0; j < cells.length; j++)
-                if (cells[i][j] == 0) return false;
+        for (Cell c : field.getCells()) if (c.isEmpty()) return false;
         return true;
     }
 

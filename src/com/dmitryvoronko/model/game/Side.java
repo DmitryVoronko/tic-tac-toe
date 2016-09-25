@@ -1,4 +1,4 @@
-package com.dmitryvoronko.model;
+package com.dmitryvoronko.model.game;
 
 /**
  * Created by Dmitry on 24/09/2016.

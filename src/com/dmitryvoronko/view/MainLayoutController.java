@@ -1,9 +1,13 @@
 package com.dmitryvoronko.view;
 
-import com.dmitryvoronko.model.Game;
-import com.dmitryvoronko.model.Move;
-import com.dmitryvoronko.model.Side;
-import com.dmitryvoronko.model.State;
+import com.dmitryvoronko.model.field.*;
+import com.dmitryvoronko.model.game.Game;
+import com.dmitryvoronko.model.game.Move;
+import com.dmitryvoronko.model.game.Side;
+import com.dmitryvoronko.model.game.State;
+import com.dmitryvoronko.model.player.Computer;
+import com.dmitryvoronko.model.player.UserPlayer;
+import com.dmitryvoronko.util.Ref;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,16 +28,13 @@ import java.util.Optional;
  */
 public class MainLayoutController implements Observer {
 
+    private final Ref<Move> lastMoveRef = new Ref<>();
     private Side computerSide;
+    private Side userSide;
     private Game game;
     private ArrayList<Button> field;
     @FXML
     private GridPane gridPane;
-
-
-    private void createField() {
-    }
-
     private EventHandler<MouseEvent> clickCellHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             clickCell(event);
@@ -41,13 +42,12 @@ public class MainLayoutController implements Observer {
 
         private void clickCell(MouseEvent event) {
             Button button = (Button) event.getSource();
-            String userSide = game.getUser().getSide().name();
-            button.setText(userSide);
+            button.setText(userSide.name());
             button.setDisable(true);
             int row = ((GridPane) button.getParent()).getRowIndex(button);
             int column = ((GridPane) button.getParent()).getColumnIndex(button);
-            game.getUser().move(row, column);
-            computerMove(game.getComputer().getStrategyMove());
+            lastMoveRef.setValue(new Move(row, column));
+            game.makeTurn();
         }
     };
     @FXML
@@ -68,6 +68,9 @@ public class MainLayoutController implements Observer {
     private Button buttonCell21;
     @FXML
     private Button buttonCell22;
+
+    private void createField() {
+    }
 
     @FXML
     public void startPlayerX() {
@@ -103,13 +106,14 @@ public class MainLayoutController implements Observer {
             if (game.getState() != State.RUN) {
                 showGameOverDialog();
             } else {
-                Move computerMove = (Move) arg;
-                computerMove(computerMove);
+                Move move = (Move) arg;
+                System.out.println(move);
+                printComputerMove(move);
             }
         }
     }
 
-    private void computerMove(Move computerMove) {
+    private void printComputerMove(Move computerMove) {
         int row = computerMove.getRow();
         int column = computerMove.getColumn();
         Button button = (Button) getNodeByRowColumnIndex(row, column, gridPane);
@@ -160,10 +164,8 @@ public class MainLayoutController implements Observer {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeOne) {
             newGame(Side.X);
-            computerSide = Side.O;
         } else {
             newGame(Side.O);
-            computerSide = Side.X;
         }
     }
 
@@ -172,8 +174,21 @@ public class MainLayoutController implements Observer {
             game.deleteObserver(this);
         }
         clearField();
-        game = new Game(side);
+        switch (side) {
+            case X:
+                userSide = Side.X;
+                computerSide = Side.O;
+                game = new Game((Field field, Side s) -> new UserPlayer(lastMoveRef, field, s), Computer::new);
+                break;
+
+            case O:
+                userSide = Side.O;
+                computerSide = Side.X;
+                game = new Game(Computer::new, (Field field, Side s) -> new UserPlayer(lastMoveRef, field, s));
+                break;
+        }
         game.addObserver(this);
+        game.makeTurn();
     }
 
     private void clearField() {

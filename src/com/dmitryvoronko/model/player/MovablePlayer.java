@@ -1,9 +1,12 @@
-package com.dmitryvoronko.model;
+package com.dmitryvoronko.model.player;
+
+import com.dmitryvoronko.model.field.Field;
+import com.dmitryvoronko.model.game.Side;
 
 /**
  * Created by Dmitry on 25/09/2016.
  */
-public abstract class MovablePlayer {
+public abstract class MovablePlayer implements Player {
 
     protected Field field;
     protected Side side;

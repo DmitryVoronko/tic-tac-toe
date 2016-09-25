@@ -1,4 +1,7 @@
-package com.dmitryvoronko.model;
+package com.dmitryvoronko.model.game;
+
+import com.dmitryvoronko.model.field.Field;
+import com.dmitryvoronko.model.field.FieldChecker;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -11,9 +14,9 @@ public class Consider implements Observer {
     private FieldChecker fieldChecker;
     private Game game;
 
-    public Consider(Game game) {
+    public Consider(Game game, Field field) {
         this.game = game;
-        game.getField().addObserver(this);
+        field.addObserver(this);
         this.fieldChecker = new FieldChecker();
     }
 
