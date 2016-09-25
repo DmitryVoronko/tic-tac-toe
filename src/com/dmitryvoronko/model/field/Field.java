@@ -79,12 +79,20 @@ public class Field extends Observable implements Cloneable {
             if ((cell.getRow() == 0
                     || cell.getRow() == 2)
                     && (cell.getColumn() == 0
-                    || cell.getColumn() == 0)) {
+                    || cell.getColumn() == 2)) {
                 cell.setWeight(2);
             } else if (cell.getRow() == 1 && cell.getColumn() == 1) {
                 cell.setWeight(3);
             }
         }
+    }
+
+    public boolean isFull() {
+        for (Cell cell: cells) {
+            if (cell.isEmpty())
+                return false;
+        }
+        return true;
     }
 
 }

@@ -6,6 +6,8 @@ import com.dmitryvoronko.model.field.FieldChecker;
 import com.dmitryvoronko.model.game.Move;
 import com.dmitryvoronko.model.game.Side;
 
+import java.util.Optional;
+
 /**
  * Created by Dmitry on 24/09/2016.
  */
@@ -16,7 +18,7 @@ public final class Computer extends MovablePlayer {
     }
 
     public Move move() {
-        Move move = getMove();
+        Move move = getMove().orElse(null);
         if (move != null) {
             move(move.getRow(), move.getColumn());
             return move;
@@ -34,25 +36,28 @@ public final class Computer extends MovablePlayer {
         return false;
     }
 
-    private Move winMove(Side tSide) {
+    private Optional<Move> winMove(Side tSide) {
         for (int row = 0; row < field.getLength(); row++)
             for (int column = 0; column < field.getLength(); column++) {
                 Cell currentCell = field.getCellByRowAndColumn(row, column);
                 if (currentCell.isEmpty())
                     if (isWinMove(currentCell.getRow(), currentCell.getColumn(), field.clone(), tSide)) {
-                        return new Move(row, column);
+                        return Optional.of(new Move(row, column));
                     }
             }
-        return null;
+        return Optional.empty();
     }
 
-    private Move getMove() {
-        Move result;
-        Move winMove = winMove(side);
-        if (winMove != null) result = winMove;
+    private Optional<Move> getMove() {
+        Optional<Move> result;
+        Optional<Move> winMove = winMove(side);
+        if (winMove.isPresent()) result = winMove;
         else {
-            Move enemyWinMove = winMove(getEnemySide());
-            result = enemyWinMove == null ? getWeightedMove() : enemyWinMove;
+
+            Optional<Move> enemyWinMove = winMove(getEnemySide());
+            Optional<Move> weightedMove = getWeightedMove();
+
+            result = Optional.ofNullable(enemyWinMove.orElse(weightedMove.orElse(null)));
         }
         return result;
     }
@@ -65,21 +70,32 @@ public final class Computer extends MovablePlayer {
         }
     }
 
-    private Move getWeightedMove() {
-        Cell result = getEmptyCell();
+    private Optional<Move> getWeightedMove() {
+        Optional<Cell> result = getEmptyCell();
         for (Cell cell : field.getCells()) {
             if (cell.isEmpty()) {
-                result = getMax(result, cell);
+                if(result.isPresent()) {
+                    result = Optional.ofNullable(getMax(result.get(), cell));
+                } else {
+                    result = Optional.of(cell);
+                }
             }
         }
-        return new Move(result.getRow(), result.getColumn());
+
+        Optional<Move> resultMove = Optional.empty();
+
+        if(result.isPresent()) {
+            resultMove = Optional.of(new Move(result.get().getRow(), result.get().getColumn()));
+        }
+
+        return resultMove;
     }
 
-    private Cell getEmptyCell() {
-        Cell result = null;
+    private Optional<Cell> getEmptyCell() {
+        Optional<Cell> result = Optional.empty();
         for (Cell cell : field.getCells()) {
             if (cell.isEmpty()) {
-                result = cell;
+                result = Optional.of(cell);
                 break;
             }
         }
@@ -87,6 +103,6 @@ public final class Computer extends MovablePlayer {
     }
 
     private Cell getMax(Cell first, Cell second) {
-        return (first.getValue() >= second.getValue()) ? first : second;
+        return (first.getWeight() >= second.getWeight()) ? first : second;
     }
 }

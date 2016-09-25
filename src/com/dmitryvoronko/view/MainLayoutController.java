@@ -193,7 +193,6 @@ public class MainLayoutController implements GameObserver {
     }
 
     public void gameStateChanged(State state) {
-        System.out.println("STATE CHANGED");
         showGameOverDialog(state);
     }
 }
