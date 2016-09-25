@@ -9,7 +9,6 @@ import java.util.Random;
  */
 public final class Computer extends Player {
 
-
     public Computer(Field field, Side side) {
         super(field, side);
     }
@@ -77,9 +76,5 @@ public final class Computer extends Player {
         } else {
             return Side.O;
         }
-    }
-
-    public void move() {
-        getStrategyMove();
     }
 }

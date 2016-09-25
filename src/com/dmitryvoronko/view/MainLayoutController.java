@@ -40,6 +40,7 @@ public class MainLayoutController implements Observer {
             int row = ((GridPane) button.getParent()).getRowIndex(button);
             int column = ((GridPane) button.getParent()).getColumnIndex(button);
             game.getUser().move(row, column);
+            computerMove(game.getComputer().getStrategyMove());
         }
     };
 
@@ -99,13 +100,17 @@ public class MainLayoutController implements Observer {
                 showGameOverDialog();
             } else {
                 Move computerMove = (Move) arg;
-                int row = computerMove.getRow();
-                int column = computerMove.getColumn();
-                Button button = (Button) getNodeByRowColumnIndex(row, column, gridPane);
-                button.setText(computerSide.name());
-                button.setDisable(true);
+                computerMove(computerMove);
             }
         }
+    }
+
+    private void computerMove(Move computerMove) {
+        int row = computerMove.getRow();
+        int column = computerMove.getColumn();
+        Button button = (Button) getNodeByRowColumnIndex(row, column, gridPane);
+        button.setText(computerSide.name());
+        button.setDisable(true);
     }
 
     private void showGameOverDialog() {

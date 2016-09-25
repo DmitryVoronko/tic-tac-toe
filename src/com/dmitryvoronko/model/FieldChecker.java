@@ -1,5 +1,8 @@
 package com.dmitryvoronko.model;
 
+import java.util.Observable;
+import java.util.Observer;
+
 /**
  * Created by Dmitry on 24/09/2016.
  */

@@ -13,7 +13,7 @@ public class Game extends Observable {
     private Side winner;
     private State state;
     private Player user;
-    private Player computer;
+    private Computer computer;
 
     public Game(Side userSide) {
         this.field = new Field(R.FIELD_LENGTH);
@@ -28,6 +28,8 @@ public class Game extends Observable {
             case O:
                 computer = new Computer(field, Side.X);
                 user = new UserPlayer(field, Side.O);
+                setChanged();
+                notifyObservers(computer.getStrategyMove());
                 break;
         }
     }
@@ -57,5 +59,13 @@ public class Game extends Observable {
 
     public Player getUser() {
         return user;
+    }
+
+    public void makeTurn() {
+
+    }
+
+    public Computer getComputer() {
+        return computer;
     }
 }
