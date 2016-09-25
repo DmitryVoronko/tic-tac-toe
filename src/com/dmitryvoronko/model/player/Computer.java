@@ -74,7 +74,7 @@ public final class Computer extends MovablePlayer {
         Optional<Cell> result = getEmptyCell();
         for (Cell cell : field.getCells()) {
             if (cell.isEmpty()) {
-                if(result.isPresent()) {
+                if (result.isPresent()) {
                     result = Optional.ofNullable(getMax(result.get(), cell));
                 } else {
                     result = Optional.of(cell);
@@ -84,7 +84,7 @@ public final class Computer extends MovablePlayer {
 
         Optional<Move> resultMove = Optional.empty();
 
-        if(result.isPresent()) {
+        if (result.isPresent()) {
             resultMove = Optional.of(new Move(result.get().getRow(), result.get().getColumn()));
         }
 

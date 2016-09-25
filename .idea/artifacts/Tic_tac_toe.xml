@@ -1,15 +1,15 @@
 <component name="ArtifactManager">
   <artifact type="javafx" build-on-make="true" name="Tic-tac-toe">
-    <output-path>$PROJECT_DIR$/out/artifacts/Tic_tac_toe</output-path>
+    <output-path>$PROJECT_DIR$/release/Tic_tac_toe</output-path>
     <properties id="ant-preprocessing">
       <options enabled="true" />
     </properties>
     <properties id="javafx-properties">
       <options>
-        <option name="appClass" value="sample.Main" />
+        <option name="appClass" value="com.dmitryvoronko.Main" />
         <option name="description" value="" />
         <option name="htmlPlaceholderId" value="" />
-        <option name="nativeBundle" value="exe" />
+        <option name="nativeBundle" value="all" />
         <option name="title" value="" />
         <option name="vendor" value="" />
         <option name="version" value="" />

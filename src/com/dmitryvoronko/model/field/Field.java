@@ -88,7 +88,7 @@ public class Field extends Observable implements Cloneable {
     }
 
     public boolean isFull() {
-        for (Cell cell: cells) {
+        for (Cell cell : cells) {
             if (cell.isEmpty())
                 return false;
         }

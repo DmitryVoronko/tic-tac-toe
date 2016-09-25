@@ -42,6 +42,7 @@ public class MainLayoutController implements GameObserver {
             game.makeTurn();
         }
     };
+
     @FXML
     private Button buttonCell00;
     @FXML
@@ -61,17 +62,14 @@ public class MainLayoutController implements GameObserver {
     @FXML
     private Button buttonCell22;
 
-    private void createField() {
+    @FXML
+    private void handleStartNewGame() {
+        showDialog();
     }
 
     @FXML
-    public void startPlayerX() {
-
-    }
-
-    @FXML
-    public void startPlayerY() {
-
+    private void handleExit() {
+        System.exit(0);
     }
 
     @FXML
@@ -156,7 +154,6 @@ public class MainLayoutController implements GameObserver {
             case X:
                 game = new Game((Field field, Side s) -> new UserPlayer(lastMoveRef, field, s), Computer::new);
                 break;
-
             case O:
                 game = new Game(Computer::new, (Field field, Side s) -> new UserPlayer(lastMoveRef, field, s));
                 break;
