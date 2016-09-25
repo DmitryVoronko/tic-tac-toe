@@ -27,6 +27,8 @@ public class MainLayoutController implements Observer {
     private Side computerSide;
     private Game game;
     private ArrayList<Button> field;
+    @FXML
+    private GridPane gridPane;
     private EventHandler<MouseEvent> clickCellHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             clickCell(event);
@@ -43,9 +45,6 @@ public class MainLayoutController implements Observer {
             computerMove(game.getComputer().getStrategyMove());
         }
     };
-
-    @FXML
-    private GridPane gridPane;
     @FXML
     private Button buttonCell00;
     @FXML
@@ -164,6 +163,7 @@ public class MainLayoutController implements Observer {
     }
 
     private void newGame(Side side) {
+        System.gc();
         clearField();
         game = new Game(side);
         game.addObserver(this);

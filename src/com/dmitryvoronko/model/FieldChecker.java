@@ -1,7 +1,6 @@
 package com.dmitryvoronko.model;
 
-import java.util.Observable;
-import java.util.Observer;
+import java.util.ArrayList;
 
 /**
  * Created by Dmitry on 24/09/2016.
@@ -9,6 +8,7 @@ import java.util.Observer;
 public class FieldChecker {
 
     private int winIdentifier;
+    private ArrayList<Move> winnigSequence;
 
     public FieldChecker() {
     }
@@ -41,9 +41,12 @@ public class FieldChecker {
         int[][] cells = field.getCells();
         int firstElement = cells[row][column];
         if (firstElement == 0) return false;
+        winnigSequence = new ArrayList<Move>();
         do {
             if (!((row >= 0) && (row < cells.length) && (column >= 0) && (column < cells.length))) break;
-            if (cells[row][column] == 0 || cells[row][column] != firstElement) return false;
+            if (cells[row][column] == 0) return false;
+            if (cells[row][column] != firstElement) return false;
+            winnigSequence.add(new Move(row, column));
             row += rowIncrement;
             column += columnIncrement;
         } while (true);
@@ -61,5 +64,9 @@ public class FieldChecker {
 
     public int getWinIdentifier() {
         return winIdentifier;
+    }
+
+    public ArrayList<Move> getWinnigSequence() {
+        return winnigSequence;
     }
 }

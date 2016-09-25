@@ -20,4 +20,8 @@ public class Move {
     public int getRow() {
         return row;
     }
+
+    public String toString() {
+        return "[" + row + ", " + column + "]";
+    }
 }

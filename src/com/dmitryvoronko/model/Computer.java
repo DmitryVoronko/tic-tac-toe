@@ -18,7 +18,9 @@ public final class Computer extends Player {
         if (currentCell == 0) {
             field.getCells()[row][column] = side.getId();
             FieldChecker fieldChecker = new FieldChecker();
+            System.out.println("Проверка в Computer");
             if (fieldChecker.isWin(field))
+                System.out.println("Зашел в условие, в Computer");
                 return true;
         }
         return false;

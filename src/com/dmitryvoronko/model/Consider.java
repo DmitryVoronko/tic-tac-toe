@@ -20,9 +20,12 @@ public class Consider implements Observer {
     public void update(Observable o, Object arg) {
         if (o instanceof Field) {
             Field field = (Field) o;
+            System.out.println("Проверка в Consider");
             if (fieldChecker.isWin(field)) {
+                System.out.println("Зашел в условие, в Consider");
                 game.setWinner(fieldChecker.getWinIdentifier());
                 game.setState(State.WON);
+                fieldChecker.getWinnigSequence().forEach(System.out::println);
             }
             if (fieldChecker.isDraw(field)) {
                 game.setState(State.DRAW);
