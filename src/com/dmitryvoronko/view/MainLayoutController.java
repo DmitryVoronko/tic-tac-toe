@@ -29,6 +29,11 @@ public class MainLayoutController implements Observer {
     private ArrayList<Button> field;
     @FXML
     private GridPane gridPane;
+
+
+    private void createField() {
+    }
+
     private EventHandler<MouseEvent> clickCellHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             clickCell(event);
@@ -163,7 +168,9 @@ public class MainLayoutController implements Observer {
     }
 
     private void newGame(Side side) {
-        System.gc();
+        if (game != null) {
+            game.deleteObserver(this);
+        }
         clearField();
         game = new Game(side);
         game.addObserver(this);
@@ -178,9 +185,9 @@ public class MainLayoutController implements Observer {
 
     public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         Node result = null;
-        ObservableList<Node> childrens = gridPane.getChildren();
+        ObservableList<Node> children = gridPane.getChildren();
 
-        for (Node node : childrens) {
+        for (Node node : children) {
             if (gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
                 result = node;
                 break;

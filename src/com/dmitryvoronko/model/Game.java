@@ -12,8 +12,9 @@ public class Game extends Observable {
     private Field field;
     private Side winner;
     private State state;
-    private Player user;
-    private Computer computer;
+    private Player firstPlayer;
+    private Player secondPlayer;
+    private boolean firstPlayerTurn;
 
     public Game(Side userSide) {
         this.field = new Field(R.FIELD_LENGTH);
@@ -22,14 +23,12 @@ public class Game extends Observable {
 
         switch (userSide) {
             case X:
-                computer = new Computer(field, Side.O);
-                user = new UserPlayer(field, Side.X);
+                firstPlayer = new Computer(field, Side.O);
+                secondPlayer = new UserPlayer(field, Side.X);
                 break;
             case O:
-                computer = new Computer(field, Side.X);
-                user = new UserPlayer(field, Side.O);
-                setChanged();
-                notifyObservers(computer.getStrategyMove());
+                firstPlayer = new Computer(field, Side.X);
+                secondPlayer = new UserPlayer(field, Side.O);
                 break;
         }
     }
@@ -57,15 +56,16 @@ public class Game extends Observable {
         return field;
     }
 
-    public Player getUser() {
-        return user;
-    }
-
     public void makeTurn() {
+        if (firstPlayerTurn) {
+            firstPlayer.move();
+        } else {
+            secondPlayer.move();
+        }
 
     }
 
-    public Computer getComputer() {
-        return computer;
+    public Player getCurrentPlaye() {
+        return null;
     }
 }

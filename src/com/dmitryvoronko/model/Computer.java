@@ -1,13 +1,9 @@
 package com.dmitryvoronko.model;
 
-import com.dmitryvoronko.R;
-
-import java.util.Random;
-
 /**
  * Created by Dmitry on 24/09/2016.
  */
-public final class Computer extends Player {
+public final class Computer extends MovablePlayer implements Player {
 
     public Computer(Field field, Side side) {
         super(field, side);
@@ -48,20 +44,21 @@ public final class Computer extends Player {
         return result;
     }
 
-    private Move getRandomMove() {
-        int row, column;
-        Random rand = new Random();
-        int result;
-        do {
-            result = rand.nextInt(R.FIELD_SIZE);
-            row = result / R.FIELD_LENGTH;
-            column = result % R.FIELD_LENGTH;
-        } while (field.getCells()[row][column] == 0);
+//    private Move getRandomMove() {
+//
+//        int cells[][] = field.getCells();
+//
+//        int cell00 = cells[0][0]; int cell01 = cells[0][1];; int cell02 = cells[0][2];
+//        int cell10 = cells[1][0]; int cell11 = cells[1][1];; int cell12 = cells[1][2];
+//        int cell20 = cells[2][0]; int cell21 = cells[2][1];; int cell22 = cells[2][2];
+//
+//        if (cell11 == 0) {
+//        } else if (ce)
+//        }
+//
+//    }
 
-        move(row, column);
 
-        return new Move(row, column);
-    }
 
     private Move getMove() {
         int center = (field.length - 1) / 2;
@@ -69,7 +66,8 @@ public final class Computer extends Player {
             move(center, center);
             return new Move(center, center);
         }
-        return getRandomMove();
+//        return getRandomMove();
+        return null;
     }
 
     private Side getEnemySide() {
@@ -78,5 +76,14 @@ public final class Computer extends Player {
         } else {
             return Side.O;
         }
+    }
+
+    public boolean move() {
+        Move move = getStrategyMove();
+        if(move != null) {
+            move(move.getRow(), move.getColumn());
+            return true;
+        }
+        return false;
     }
 }
