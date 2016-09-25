@@ -19,16 +19,12 @@ public final class UserPlayer extends MovablePlayer implements Player {
 
     public Move move() {
         Move move = lastMoveRef.getValue();
+        lastMoveRef.setValue(null);
         if (move != null) {
             move(move.getRow(), move.getColumn());
-            System.out.println(this + " удачно походил " + move);
             return move;
         }
         return null;
     }
 
-    @Override
-    public String toString() {
-        return "Игрок";
-    }
 }

@@ -25,8 +25,6 @@ import java.util.Optional;
 public class MainLayoutController implements GameObserver {
 
     private final Ref<Move> lastMoveRef = new Ref<>();
-    private Side computerSide;
-    private Side userSide;
     private Game game;
     private ArrayList<Button> field;
     @FXML
@@ -148,21 +146,21 @@ public class MainLayoutController implements GameObserver {
             game.removeObserver(this);
         }
         clearField();
+        chooseSide(side);
+        game.registerObserver(this);
+        game.makeTurn();
+    }
+
+    private void chooseSide(Side side) {
         switch (side) {
             case X:
-                userSide = Side.X;
-                computerSide = Side.O;
                 game = new Game((Field field, Side s) -> new UserPlayer(lastMoveRef, field, s), Computer::new);
                 break;
 
             case O:
-                userSide = Side.O;
-                computerSide = Side.X;
                 game = new Game(Computer::new, (Field field, Side s) -> new UserPlayer(lastMoveRef, field, s));
                 break;
         }
-        game.registerObserver(this);
-        game.makeTurn();
     }
 
     private void clearField() {
@@ -195,6 +193,7 @@ public class MainLayoutController implements GameObserver {
     }
 
     public void gameStateChanged(State state) {
+        System.out.println("STATE CHANGED");
         showGameOverDialog(state);
     }
 }

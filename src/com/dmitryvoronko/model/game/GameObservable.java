@@ -23,13 +23,15 @@ public abstract class GameObservable {
     }
 
     public void notifyPlayerMoved(Player player, Move move) {
-        for (GameObserver observer : observers) {
+        ArrayList<GameObserver> clonedObservers = (ArrayList<GameObserver>)observers.clone();
+        for (GameObserver observer : clonedObservers) {
             observer.playerMoved(player, move);
         }
     }
 
     public void notifyGameStateChanged(State state) {
-        for (GameObserver observer : observers) {
+        ArrayList<GameObserver> clonedObservers = (ArrayList<GameObserver>)observers.clone();
+        for (GameObserver observer : clonedObservers) {
             observer.gameStateChanged(state);
         }
     }

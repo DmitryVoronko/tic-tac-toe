@@ -18,7 +18,6 @@ public class Field extends Observable implements Cloneable {
         cells = new ArrayList<Cell>();
         fillCells(length);
         setWeight();
-        cells.forEach(System.out::println);
     }
 
     public Field(Field field) {
@@ -33,18 +32,13 @@ public class Field extends Observable implements Cloneable {
     }
 
     public boolean fillCell(int row, int column, int value) {
-        System.out.println("Вызван");
         Cell cell = getCellByRowAndColumn(row, column);
-        System.out.println("До установления значения " + cell + " " + cell.isEmpty());
         if (cell.isEmpty()) {
             cell.setValue(value);
-            System.out.println(cell);
-            System.out.println(value);
             setChanged();
             notifyObservers(new Move(row, column));
             return true;
         }
-        System.out.println("Не удалось");
         return false;
     }
 

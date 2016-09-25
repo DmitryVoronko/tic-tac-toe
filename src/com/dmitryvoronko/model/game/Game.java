@@ -47,12 +47,14 @@ public class Game extends GameObservable {
     }
 
     public void makeTurn() {
-        if (firstPlayerTurn) {
-            makeStepFirstPlayer();
-            makeStepSecondPlayer();
-        } else {
-            makeStepSecondPlayer();
-            makeStepFirstPlayer();
+        if (state.equals(State.RUN)) {
+            if (firstPlayerTurn) {
+                makeStepFirstPlayer();
+                makeStepSecondPlayer();
+            } else {
+                makeStepSecondPlayer();
+                makeStepFirstPlayer();
+            }
         }
     }
 

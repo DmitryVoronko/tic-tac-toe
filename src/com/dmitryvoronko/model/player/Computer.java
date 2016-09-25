@@ -19,24 +19,16 @@ public final class Computer extends MovablePlayer {
         Move move = getMove();
         if (move != null) {
             move(move.getRow(), move.getColumn());
-            System.out.println(this + " удачно походил " + move);
             return move;
         }
         return null;
-    }
-
-    @Override
-    public String toString() {
-        return "Компьютер";
     }
 
     private boolean isWinMove(int row, int column, Field field, Side side) {
         Cell currentCell = field.getCellByRowAndColumn(row, column);
         currentCell.setValue(side.getId());
         FieldChecker fieldChecker = new FieldChecker();
-        System.out.println("Проверка в Computer");
         if (fieldChecker.isWin(field)) {
-            System.out.println("Зашел в условие, в Computer");
             return true;
         }
         return false;
@@ -48,7 +40,6 @@ public final class Computer extends MovablePlayer {
                 Cell currentCell = field.getCellByRowAndColumn(row, column);
                 if (currentCell.isEmpty())
                     if (isWinMove(currentCell.getRow(), currentCell.getColumn(), field.clone(), tSide)) {
-                        System.out.println("Вернул выигрышный путь");
                         return new Move(row, column);
                     }
             }
@@ -63,7 +54,6 @@ public final class Computer extends MovablePlayer {
             Move enemyWinMove = winMove(getEnemySide());
             result = enemyWinMove == null ? getWeightedMove() : enemyWinMove;
         }
-        System.out.println("Что-то вернул тут = " + result);
         return result;
     }
 
@@ -78,11 +68,8 @@ public final class Computer extends MovablePlayer {
     private Move getWeightedMove() {
         Cell result = getEmptyCell();
         for (Cell cell : field.getCells()) {
-            System.out.println("TEST 4");
             if (cell.isEmpty()) {
-                System.out.println("TEST 2");
                 result = getMax(result, cell);
-                System.out.println("TEST 1");
             }
         }
         return new Move(result.getRow(), result.getColumn());
@@ -90,16 +77,12 @@ public final class Computer extends MovablePlayer {
 
     private Cell getEmptyCell() {
         Cell result = null;
-        System.out.println("TEST 3");
         for (Cell cell : field.getCells()) {
-            System.out.println("TEST 9 " + cell);
             if (cell.isEmpty()) {
-                System.out.println("TEST 10");
                 result = cell;
                 break;
             }
         }
-        System.out.println("TEST 5");
         return result;
     }
 
