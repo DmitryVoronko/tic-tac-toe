@@ -1,11 +1,9 @@
 package com.dmitryvoronko.view;
 
 import com.dmitryvoronko.model.field.Field;
-import com.dmitryvoronko.model.game.Game;
-import com.dmitryvoronko.model.game.Move;
-import com.dmitryvoronko.model.game.Side;
-import com.dmitryvoronko.model.game.State;
+import com.dmitryvoronko.model.game.*;
 import com.dmitryvoronko.model.player.Computer;
+import com.dmitryvoronko.model.player.Player;
 import com.dmitryvoronko.model.player.UserPlayer;
 import com.dmitryvoronko.util.Ref;
 import javafx.collections.ObservableList;
@@ -19,14 +17,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Optional;
 
 /**
  * Created by Dmitry on 23/09/2016.
  */
-public class MainLayoutController implements Observer {
+public class MainLayoutController implements GameObserver {
 
     private final Ref<Move> lastMoveRef = new Ref<>();
     private Side computerSide;
@@ -42,8 +38,6 @@ public class MainLayoutController implements Observer {
 
         private void clickCell(MouseEvent event) {
             Button button = (Button) event.getSource();
-            button.setText(userSide.name());
-            button.setDisable(true);
             int row = ((GridPane) button.getParent()).getRowIndex(button);
             int column = ((GridPane) button.getParent()).getColumnIndex(button);
             lastMoveRef.setValue(new Move(row, column));
@@ -101,29 +95,9 @@ public class MainLayoutController implements Observer {
 
     }
 
-    public void update(Observable o, Object arg) {
-        if (o instanceof Game) {
-            if (game.getState() != State.RUN) {
-                showGameOverDialog();
-            } else {
-                Move move = (Move) arg;
-                System.out.println(move);
-                printComputerMove(move);
-            }
-        }
-    }
-
-    private void printComputerMove(Move computerMove) {
-        int row = computerMove.getRow();
-        int column = computerMove.getColumn();
-        Button button = (Button) getNodeByRowColumnIndex(row, column, gridPane);
-        button.setText(computerSide.name());
-        button.setDisable(true);
-    }
-
-    private void showGameOverDialog() {
+    private void showGameOverDialog(State state) {
         String title;
-        if (game.getState().equals(State.WON)) {
+        if (state.equals(State.WON)) {
             title = "Победа " + game.getWinner().name();
         } else {
             title = "Ничья";
@@ -171,7 +145,7 @@ public class MainLayoutController implements Observer {
 
     private void newGame(Side side) {
         if (game != null) {
-            game.deleteObserver(this);
+            game.removeObserver(this);
         }
         clearField();
         switch (side) {
@@ -187,7 +161,7 @@ public class MainLayoutController implements Observer {
                 game = new Game(Computer::new, (Field field, Side s) -> new UserPlayer(lastMoveRef, field, s));
                 break;
         }
-        game.addObserver(this);
+        game.registerObserver(this);
         game.makeTurn();
     }
 
@@ -210,5 +184,17 @@ public class MainLayoutController implements Observer {
         }
 
         return result;
+    }
+
+    public void playerMoved(Player player, Move move) {
+        int row = move.getRow();
+        int column = move.getColumn();
+        Button button = (Button) getNodeByRowColumnIndex(row, column, gridPane);
+        button.setText(player.getSide().name());
+        button.setDisable(true);
+    }
+
+    public void gameStateChanged(State state) {
+        showGameOverDialog(state);
     }
 }

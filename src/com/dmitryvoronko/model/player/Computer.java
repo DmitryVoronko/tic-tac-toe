@@ -15,14 +15,14 @@ public final class Computer extends MovablePlayer {
         super(field, side);
     }
 
-    public boolean move() {
-        Move move = getStrategyMove();
+    public Move move() {
+        Move move = getMove();
         if (move != null) {
             move(move.getRow(), move.getColumn());
             System.out.println(this + " удачно походил " + move);
-            return true;
+            return move;
         }
-        return false;
+        return null;
     }
 
     @Override
@@ -43,8 +43,8 @@ public final class Computer extends MovablePlayer {
     }
 
     private Move winMove(Side tSide) {
-        for (int row = 0; row < field.length; row++)
-            for (int column = 0; column < field.length; column++) {
+        for (int row = 0; row < field.getLength(); row++)
+            for (int column = 0; column < field.getLength(); column++) {
                 Cell currentCell = field.getCellByRowAndColumn(row, column);
                 if (currentCell.isEmpty())
                     if (isWinMove(currentCell.getRow(), currentCell.getColumn(), field.clone(), tSide)) {
@@ -55,7 +55,7 @@ public final class Computer extends MovablePlayer {
         return null;
     }
 
-    private Move getStrategyMove() {
+    private Move getMove() {
         Move result;
         Move winMove = winMove(side);
         if (winMove != null) result = winMove;

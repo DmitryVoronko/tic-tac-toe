@@ -3,7 +3,7 @@ package com.dmitryvoronko.model.field;
 /**
  * Created by Dmitry on 25/09/2016.
  */
-public class Cell {
+public class Cell implements Cloneable {
     private int row;
     private int column;
     private int weight = 1;
@@ -44,6 +44,14 @@ public class Cell {
 
     public boolean isEmpty() {
         return (value == 0);
+    }
+
+    public Cell clone() {
+        try {
+            return (Cell) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new InternalError();
+        }
     }
 
 }

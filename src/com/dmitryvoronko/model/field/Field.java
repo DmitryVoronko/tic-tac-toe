@@ -4,12 +4,13 @@ import com.dmitryvoronko.model.game.Move;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.stream.Collectors;
 
 /**
  * Created by Dmitry on 25/09/2016.
  */
 public class Field extends Observable implements Cloneable {
-    public final int length;
+    private int length;
     private ArrayList<Cell> cells;
 
     public Field(int length) {
@@ -18,6 +19,13 @@ public class Field extends Observable implements Cloneable {
         fillCells(length);
         setWeight();
         cells.forEach(System.out::println);
+    }
+
+    public Field(Field field) {
+        this.cells = new ArrayList<>(field.getLength());
+        for (Cell cell : field.cells) {
+            cells.add(cell);
+        }
     }
 
     public ArrayList<Cell> getCells() {
@@ -42,10 +50,18 @@ public class Field extends Observable implements Cloneable {
 
     public Field clone() {
         try {
-            return (Field) super.clone();
+            Field field = (Field) super.clone();
+            field.cells = field.cells.stream()
+                    .map(Cell::clone)
+                    .collect(Collectors.toCollection(ArrayList::new));
+            return field;
         } catch (CloneNotSupportedException ex) {
             throw new InternalError();
         }
+    }
+
+    public int getLength() {
+        return length;
     }
 
     public Cell getCellByRowAndColumn(int row, int column) {

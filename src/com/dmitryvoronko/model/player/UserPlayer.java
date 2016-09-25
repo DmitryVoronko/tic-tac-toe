@@ -17,14 +17,14 @@ public final class UserPlayer extends MovablePlayer implements Player {
         this.lastMoveRef = lastMoveRef;
     }
 
-    public boolean move() {
+    public Move move() {
         Move move = lastMoveRef.getValue();
         if (move != null) {
             move(move.getRow(), move.getColumn());
             System.out.println(this + " удачно походил " + move);
-            return true;
+            return move;
         }
-        return false;
+        return null;
     }
 
     @Override

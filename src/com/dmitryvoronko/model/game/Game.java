@@ -4,14 +4,12 @@ import com.dmitryvoronko.R;
 import com.dmitryvoronko.model.field.Field;
 import com.dmitryvoronko.model.player.Player;
 
-import java.util.Observable;
-import java.util.Observer;
 import java.util.function.BiFunction;
 
 /**
  * Created by Dmitry on 24/09/2016.
  */
-public class Game extends Observable implements Observer {
+public class Game extends GameObservable {
 
     private Field field;
     private Side winner;
@@ -23,7 +21,6 @@ public class Game extends Observable implements Observer {
     public Game(BiFunction<Field, Side, Player> firstPlayerFactory,
                 BiFunction<Field, Side, Player> secondPlayerFactory) {
         this.field = new Field(R.FIELD_LENGTH);
-        field.addObserver(this);
         new Consider(this, field);
         this.state = State.RUN;
         firstPlayer = firstPlayerFactory.apply(field, Side.X);
@@ -46,8 +43,7 @@ public class Game extends Observable implements Observer {
 
     public void setState(State state) {
         this.state = state;
-        setChanged();
-        notifyObservers();
+        notifyGameStateChanged(state);
     }
 
     public void makeTurn() {
@@ -62,20 +58,23 @@ public class Game extends Observable implements Observer {
 
     private void makeStepFirstPlayer() {
         if (firstPlayerTurn) {
-            firstPlayerTurn = !firstPlayer.move();
+            Move playerMove = firstPlayer.move();
+
+            if (playerMove != null) {
+                notifyPlayerMoved(firstPlayer, playerMove);
+                firstPlayerTurn = false;
+            }
         }
     }
 
     private void makeStepSecondPlayer() {
         if (!firstPlayerTurn) {
-            firstPlayerTurn = secondPlayer.move();
-        }
-    }
+            Move playerMove = secondPlayer.move();
 
-    public void update(Observable o, Object arg) {
-        if (o instanceof Field) {
-            setChanged();
-            notifyObservers(arg);
+            if (playerMove != null) {
+                notifyPlayerMoved(secondPlayer, playerMove);
+                firstPlayerTurn = true;
+            }
         }
     }
 }

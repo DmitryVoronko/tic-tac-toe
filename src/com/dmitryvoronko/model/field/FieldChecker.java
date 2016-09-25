@@ -24,17 +24,17 @@ public class FieldChecker {
 
     private boolean hasWinningDiagonal(Field field) {
         return isWinningSequence(field, 0, 0, 1, 1) ||
-                isWinningSequence(field, 0, field.length - 1, 1, -1);
+                isWinningSequence(field, 0, field.getLength() - 1, 1, -1);
     }
 
     private boolean hasWinningRow(Field field) {
-        for (int i = 0; i < field.length; i++)
+        for (int i = 0; i < field.getLength(); i++)
             if (isWinningSequence(field, i, 0, 0, 1)) return true;
         return false;
     }
 
     private boolean hasWinningColumn(Field field) {
-        for (int i = 0; i < field.length; i++)
+        for (int i = 0; i < field.getLength(); i++)
             if (isWinningSequence(field, 0, i, 1, 0))
                 return true;
         return false;
@@ -46,7 +46,7 @@ public class FieldChecker {
         if (firstElement.isEmpty()) return false;
         winnigSequence = new ArrayList<Move>();
         do {
-            if (!((row >= 0) && (row < field.length) && (column >= 0) && (column < field.length))) break;
+            if (!((row >= 0) && (row < field.getLength()) && (column >= 0) && (column < field.getLength()))) break;
             Cell currentCell = field.getCellByRowAndColumn(row, column);
             if (currentCell.isEmpty()) return false;
             if (currentCell.getValue() != firstElement.getValue()) return false;
