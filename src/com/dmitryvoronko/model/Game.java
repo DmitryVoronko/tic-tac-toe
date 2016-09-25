@@ -14,7 +14,7 @@ public class Game extends Observable {
     private State state;
     private Player firstPlayer;
     private Player secondPlayer;
-    private boolean firstPlayerTurn;
+    private boolean firstPlayerTurn = true;
 
     public Game(Side userSide) {
         this.field = new Field(R.FIELD_LENGTH);
@@ -23,8 +23,8 @@ public class Game extends Observable {
 
         switch (userSide) {
             case X:
-                firstPlayer = new Computer(field, Side.O);
-                secondPlayer = new UserPlayer(field, Side.X);
+                firstPlayer = new UserPlayer(field, Side.X);
+                secondPlayer = new Computer(field, Side.O);
                 break;
             case O:
                 firstPlayer = new Computer(field, Side.X);
@@ -59,6 +59,7 @@ public class Game extends Observable {
     public void makeTurn() {
         if (firstPlayerTurn) {
             firstPlayer.move();
+            firstPlayerTurn = false;
         } else {
             secondPlayer.move();
         }
