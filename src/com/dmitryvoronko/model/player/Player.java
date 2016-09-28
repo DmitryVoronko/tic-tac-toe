@@ -9,6 +9,5 @@ import com.dmitryvoronko.model.game.Side;
  */
 public interface Player {
     public Move move();
-
     public Side getSide();
 }

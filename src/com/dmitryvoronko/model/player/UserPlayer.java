@@ -17,14 +17,9 @@ public final class UserPlayer extends MovablePlayer implements Player {
         this.lastMoveRef = lastMoveRef;
     }
 
-    public Move move() {
+    protected Move getMove() {
         Move move = lastMoveRef.getValue();
         lastMoveRef.setValue(null);
-        if (move != null) {
-            move(move.getRow(), move.getColumn());
-            return move;
-        }
-        return null;
+        return move;
     }
-
 }

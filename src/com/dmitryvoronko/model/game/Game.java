@@ -37,10 +37,6 @@ public class Game extends GameObservable {
         else if (winIdentifier == 1) winner = Side.O;
     }
 
-    public State getState() {
-        return state;
-    }
-
     public void setState(State state) {
         this.state = state;
         notifyGameStateChanged(state);

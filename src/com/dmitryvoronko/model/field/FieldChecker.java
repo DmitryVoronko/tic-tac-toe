@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class FieldChecker {
 
     private int winIdentifier;
-    private ArrayList<Move> winnigSequence;
+    private ArrayList<Move> winingSequence;
 
     public FieldChecker() {
     }
@@ -44,13 +44,13 @@ public class FieldChecker {
         ArrayList<Cell> cells = field.getCells();
         Cell firstElement = field.getCellByRowAndColumn(row, column);
         if (firstElement.isEmpty()) return false;
-        winnigSequence = new ArrayList<Move>();
+        winingSequence = new ArrayList<Move>();
         do {
             if (!((row >= 0) && (row < field.getLength()) && (column >= 0) && (column < field.getLength()))) break;
             Cell currentCell = field.getCellByRowAndColumn(row, column);
             if (currentCell.isEmpty()) return false;
             if (currentCell.getValue() != firstElement.getValue()) return false;
-            winnigSequence.add(new Move(row, column));
+            winingSequence.add(new Move(row, column));
             row += rowIncrement;
             column += columnIncrement;
         } while (true);
@@ -67,7 +67,7 @@ public class FieldChecker {
         return winIdentifier;
     }
 
-    public ArrayList<Move> getWinnigSequence() {
-        return winnigSequence;
+    public ArrayList<Move> getWiningSequence() {
+        return winingSequence;
     }
 }

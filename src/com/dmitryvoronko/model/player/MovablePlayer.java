@@ -1,6 +1,7 @@
 package com.dmitryvoronko.model.player;
 
 import com.dmitryvoronko.model.field.Field;
+import com.dmitryvoronko.model.game.Move;
 import com.dmitryvoronko.model.game.Side;
 
 /**
@@ -16,11 +17,22 @@ public abstract class MovablePlayer implements Player {
         this.side = side;
     }
 
-    protected boolean move(int row, int column) {
+    protected final boolean move(int row, int column) {
         return field.fillCell(row, column, side.getId());
     }
 
-    public Side getSide() {
+    public final Side getSide() {
         return side;
+    }
+
+    protected abstract Move getMove();
+
+    public final Move move() {
+        Move move = getMove();
+        if (move != null) {
+            move(move.getRow(), move.getColumn());
+            return move;
+        }
+        return null;
     }
 }

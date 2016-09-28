@@ -17,13 +17,8 @@ public final class Computer extends MovablePlayer {
         super(field, side);
     }
 
-    public Move move() {
-        Move move = getMove().orElse(null);
-        if (move != null) {
-            move(move.getRow(), move.getColumn());
-            return move;
-        }
-        return null;
+    protected Move getMove() {
+        return getThoughtfulMove().orElse(null);
     }
 
     private boolean isWinMove(int row, int column, Field field, Side side) {
@@ -48,7 +43,7 @@ public final class Computer extends MovablePlayer {
         return Optional.empty();
     }
 
-    private Optional<Move> getMove() {
+    private Optional<Move> getThoughtfulMove() {
         Optional<Move> result;
         Optional<Move> winMove = winMove(side);
         if (winMove.isPresent()) result = winMove;

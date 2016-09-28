@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="javafx" build-on-make="true" name="Tic-tac-toe">
+  <artifact type="javafx" name="Tic-tac-toe">
     <output-path>$PROJECT_DIR$/release/Tic_tac_toe</output-path>
     <properties id="ant-preprocessing">
       <options enabled="true" />

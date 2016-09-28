@@ -24,6 +24,7 @@ import java.util.Optional;
  */
 public class MainLayoutController implements GameObserver {
 
+    private GameType currentGameType = GameType.WITH_COMPUTER;
     private final Ref<Move> lastMoveRef = new Ref<>();
     private Game game;
     private ArrayList<Button> field;
@@ -63,7 +64,14 @@ public class MainLayoutController implements GameObserver {
     private Button buttonCell22;
 
     @FXML
-    private void handleStartNewGame() {
+    private void handleStartNewGameWithComputer() {
+        currentGameType = GameType.WITH_COMPUTER;
+        showDialog();
+    }
+
+    @FXML
+    private void handleStartNewGameWithFriend() {
+        currentGameType = GameType.WITH_FRIEND;
         showDialog();
     }
 
@@ -144,18 +152,29 @@ public class MainLayoutController implements GameObserver {
             game.removeObserver(this);
         }
         clearField();
-        chooseSide(side);
+        startWithSide(side);
         game.registerObserver(this);
         game.makeTurn();
     }
 
-    private void chooseSide(Side side) {
+    private void startWithComputer(Side side) {
         switch (side) {
             case X:
                 game = new Game((Field field, Side s) -> new UserPlayer(lastMoveRef, field, s), Computer::new);
                 break;
             case O:
                 game = new Game(Computer::new, (Field field, Side s) -> new UserPlayer(lastMoveRef, field, s));
+                break;
+        }
+    }
+
+    private void startWithSide(Side side) {
+        switch (currentGameType) {
+            case WITH_COMPUTER:
+                startWithComputer(side);
+                break;
+            case WITH_FRIEND:
+                game = new Game((Field field, Side s) -> new UserPlayer(lastMoveRef, field, s), (Field field, Side s) -> new UserPlayer(lastMoveRef, field, s));
                 break;
         }
     }
@@ -167,12 +186,12 @@ public class MainLayoutController implements GameObserver {
         }
     }
 
-    public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
+    private Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         Node result = null;
         ObservableList<Node> children = gridPane.getChildren();
 
         for (Node node : children) {
-            if (gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
                 result = node;
                 break;
             }
@@ -191,5 +210,10 @@ public class MainLayoutController implements GameObserver {
 
     public void gameStateChanged(State state) {
         showGameOverDialog(state);
+    }
+
+    private enum GameType {
+        WITH_FRIEND,
+        WITH_COMPUTER
     }
 }

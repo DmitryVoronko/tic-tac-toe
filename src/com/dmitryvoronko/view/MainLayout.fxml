@@ -1,61 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="250.0" maxWidth="200.0" minHeight="250.0" minWidth="200.0"
-            prefHeight="250.0"
-            prefWidth="200.0" styleClass="content-background" stylesheets="@material-fx-v0_3.css"
-            xmlns="http://javafx.com/javafx/8" fx:controller="com.dmitryvoronko.view.MainLayoutController">
+
+<BorderPane maxHeight="250.0" maxWidth="200.0" minHeight="250.0" minWidth="200.0" prefHeight="250.0" prefWidth="200.0" styleClass="content-background" stylesheets="@material-fx-v0_3.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dmitryvoronko.view.MainLayoutController">
     <center>
-        <GridPane fx:id="gridPane" alignment="CENTER" focusTraversable="true" hgap="10"
-                  stylesheets="@material-fx-v0_3.css" vgap="10" BorderPane.alignment="CENTER">
+        <GridPane fx:id="gridPane" alignment="CENTER" focusTraversable="true" hgap="10" stylesheets="@material-fx-v0_3.css" vgap="10" BorderPane.alignment="CENTER">
             <rowConstraints>
-                <RowConstraints valignment="CENTER"/>
-                <RowConstraints valignment="CENTER"/>
-                <RowConstraints valignment="CENTER"/>
+                <RowConstraints valignment="CENTER" />
+                <RowConstraints valignment="CENTER" />
+                <RowConstraints valignment="CENTER" />
             </rowConstraints>
             <columnConstraints>
-                <ColumnConstraints halignment="CENTER"/>
-                <ColumnConstraints halignment="CENTER"/>
-                <ColumnConstraints halignment="CENTER"/>
+                <ColumnConstraints halignment="CENTER" />
+                <ColumnConstraints halignment="CENTER" />
+                <ColumnConstraints halignment="CENTER" />
             </columnConstraints>
             <children>
-                <Button fx:id="buttonCell00" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="0"
-                        GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER"/>
-                <Button fx:id="buttonCell01" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="1"
-                        GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER"/>
-                <Button fx:id="buttonCell02" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="2"
-                        GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER"/>
-                <Button fx:id="buttonCell10" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="0"
-                        GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
-                <Button fx:id="buttonCell11" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="1"
-                        GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
-                <Button fx:id="buttonCell12" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="2"
-                        GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
-                <Button fx:id="buttonCell20" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="0"
-                        GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER"/>
-                <Button fx:id="buttonCell21" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="1"
-                        GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER"/>
-                <Button fx:id="buttonCell22" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="2"
-                        GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER"/>
+                <Button fx:id="buttonCell00" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                <Button fx:id="buttonCell01" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                <Button fx:id="buttonCell02" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                <Button fx:id="buttonCell10" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                <Button fx:id="buttonCell11" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                <Button fx:id="buttonCell12" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                <Button fx:id="buttonCell20" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                <Button fx:id="buttonCell21" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                <Button fx:id="buttonCell22" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             </children>
             <BorderPane.margin>
-                <Insets/>
+                <Insets />
             </BorderPane.margin>
         </GridPane>
     </center>
     <padding>
-        <Insets bottom="10.0" top="10.0"/>
+        <Insets bottom="10.0" top="10.0" />
     </padding>
     <top>
         <MenuBar maxWidth="200.0" minWidth="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <menus>
                 <Menu mnemonicParsing="false" text="Игра">
                     <items>
-                        <MenuItem onAction="#handleStartNewGame" mnemonicParsing="false" text="Начать новую игру"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem onAction="#handleExit" mnemonicParsing="false" text="Выход"/>
+                        <MenuItem mnemonicParsing="false" onAction="#handleStartNewGameWithComputer" text="Начать новую игру с компьютером" />
+                        <MenuItem onAction="#handleStartNewGameWithFriend" mnemonicParsing="false" text="Начать новую игру с другом" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Выход" />
                     </items>
                 </Menu>
             </menus>
