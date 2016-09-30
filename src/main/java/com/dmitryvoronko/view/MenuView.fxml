@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<TitledPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@material-fx.css" text="Меню"
+            xmlns="http://javafx.com/javafx/8" fx:controller="com.dmitryvoronko.controller.MenuController">
+    <VBox.margin>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+    </VBox.margin>
+    <VBox minHeight="240" alignment="CENTER" spacing="10.0">
+        <Label styleClass="card-subtitle" text="Выберите противника"/>
+        <GridPane alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES"/>
+                <ColumnConstraints hgrow="SOMETIMES"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <RadioButton fx:id="withFriend" contentDisplay="CENTER" mnemonicParsing="false"
+                         onAction="#chooseWithFriend" text="Человек" GridPane.columnIndex="1"
+                         GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+            <RadioButton fx:id="withComputer" mnemonicParsing="false" onAction="#chooseWithComputer"
+                         text="Компьютер" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+        </GridPane>
+        <Label styleClass="card-subtitle" text="Выберите сторону"/>
+        <GridPane alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <Button onAction="#newGame" minWidth="100.0" mnemonicParsing="false"
+                    style="-fx-background-color: #D32F2F;" styleClass="button-raised" text="Новая игра"
+                    textFill="WHITE" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1"
+                    GridPane.valignment="CENTER"/>
+            <Button onAction="#exit" minWidth="100.0" style="-fx-background-color: #4CAF50;"
+                    styleClass="button-raised" text="Выход" textAlignment="CENTER" textFill="WHITE"
+                    GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1"
+                    GridPane.valignment="CENTER"/>
+            <RadioButton fx:id="sideO" contentDisplay="CENTER" mnemonicParsing="false"
+                         onAction="#chooseChoiceSideO" text="O" GridPane.columnIndex="1"
+                         GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER"/>
+            <RadioButton fx:id="sideX" mnemonicParsing="false" onAction="#chooseChoiceSideX" text="X"
+                         GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0"
+                         GridPane.valignment="CENTER"/>
+        </GridPane>
+    </VBox>
+</TitledPane>
