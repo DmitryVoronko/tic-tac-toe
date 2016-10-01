@@ -1,4 +1,4 @@
-package com.dmitryvoronko.controller;
+package com.dmitryvoronko.view;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

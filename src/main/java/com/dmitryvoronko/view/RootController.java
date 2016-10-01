@@ -1,6 +1,6 @@
-package com.dmitryvoronko.controller;
+package com.dmitryvoronko.view;
 
-import com.dmitryvoronko.App;
+import com.dmitryvoronko.Main;
 import com.dmitryvoronko.R;
 import com.dmitryvoronko.model.game.Game;
 import com.dmitryvoronko.model.game.GameObserver;
@@ -96,9 +96,10 @@ public class RootController implements GameObserver {
     private void loadMenuView() {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(App.class.getResource("view/MenuView.fxml"));
+            loader.setLocation(Main.class.getResource("/menu.fxml"));
+            MenuController controller = new MenuController();
+            loader.setController(controller);
             menuView = loader.load();
-            MenuController controller = loader.getController();
             controller.setRoot(this);
             root.getChildren().add(menuView);
         } catch (IOException e) {

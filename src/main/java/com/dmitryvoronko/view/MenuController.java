@@ -1,7 +1,8 @@
-package com.dmitryvoronko.controller;
+package com.dmitryvoronko.view;
 
 import com.dmitryvoronko.model.game.Game;
 import com.dmitryvoronko.model.game.Side;
+import com.dmitryvoronko.view.RootController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;

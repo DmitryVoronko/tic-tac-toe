@@ -3,8 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<TitledPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@material-fx.css" text="Меню"
-            xmlns="http://javafx.com/javafx/8" fx:controller="com.dmitryvoronko.controller.MenuController">
+<TitledPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="material-fx.css" text="Меню"
+            xmlns="http://javafx.com/javafx/8">
     <VBox.margin>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
     </VBox.margin>
