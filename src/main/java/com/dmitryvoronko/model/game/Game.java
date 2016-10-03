@@ -17,6 +17,7 @@ public class Game extends GameObservable {
     private Player firstPlayer;
     private Player secondPlayer;
     private boolean firstPlayerTurn;
+    private boolean isRunning = true;
 
     public Game(Type type, Side side, Ref<Move> lastMoveRef) {
         switch (type) {
@@ -50,12 +51,14 @@ public class Game extends GameObservable {
     }
 
     public void makeTurn() {
-        if (firstPlayerTurn) {
-            makeStepFirstPlayer();
-            makeStepSecondPlayer();
-        } else {
-            makeStepSecondPlayer();
-            makeStepFirstPlayer();
+        if (isRunning) {
+            if (firstPlayerTurn) {
+                makeStepFirstPlayer();
+                makeStepSecondPlayer();
+            } else {
+                makeStepSecondPlayer();
+                makeStepFirstPlayer();
+            }
         }
     }
 
@@ -82,10 +85,12 @@ public class Game extends GameObservable {
     }
 
     public void overWin(Side winnerSide) {
+        isRunning = false;
         notifyGameOverWithWin(winnerSide);
     }
 
     public void overDraw() {
+        isRunning = false;
         notifyGameOverWithDraw();
     }
 

@@ -32,8 +32,8 @@ public class MenuController {
 
     @FXML
     private void initialize() {
-        chooseWithComputer();
-        chooseChoiceSideO();
+//        chooseWithComputer();
+//        chooseChoiceSideO();
     }
 
     @FXML
@@ -84,8 +84,10 @@ public class MenuController {
         switch (side) {
             case X:
                 setSelected(sideX, sideO);
+                break;
             case O:
                 setSelected(sideO, sideX);
+                break;
         }
     }
 
